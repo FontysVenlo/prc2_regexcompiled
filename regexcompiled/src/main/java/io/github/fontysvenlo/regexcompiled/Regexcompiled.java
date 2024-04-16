@@ -37,8 +37,8 @@ public class Regexcompiled {
     //String regExString = ".+@[0-9a-zA-Z]+\\.[0-9a-zA-Z]+";   // Make sure . at right side
     //String regExString = ".+@\\w+\\.\\w+";     // shorter -> word characters
     //String regExString = ".+@(\\w+\\.)+\\w+";    // enable more sub domains
-    //String regExString = ".+@(\\w+\\.)+(\\w+)";    // group for top level domain
-    static final String regExString = "(?<username>[a-zA-Z0-9_]+)@(?<fqdn>(\\w+\\.)+(?<topdomain>\\w+))";    // named group for top level domain
+    static final String regExString = ".+@(\\w+\\.)+(\\w+)";    // group for top level domain
+//    static final String regExString = "(?<username>.+)@(?<fqdn>(\\w+\\.)+(?<topdomain>\\w+))";    // named group for top level domain
     static final Pattern regExPattern = Pattern.compile( regExString );
 
     static final List<String> testAddresses = List.of(
