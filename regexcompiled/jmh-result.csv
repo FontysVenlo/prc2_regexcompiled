@@ -1,0 +1,3 @@
+"Benchmark","Mode","Threads","Samples","Score","Score Error (99.9%)","Unit"
+"io.github.fontysvenlo.regexcompiled.Regexcompiled.b1oneUsingString","avgt",1,10,2514.957986,95.167053,"ns/op"
+"io.github.fontysvenlo.regexcompiled.Regexcompiled.b2CompiledPattern","avgt",1,10,224.806714,4.359223,"ns/op"
