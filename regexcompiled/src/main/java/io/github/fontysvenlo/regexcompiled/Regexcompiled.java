@@ -37,10 +37,15 @@ public class Regexcompiled {
     //String regExString = ".+@[0-9a-zA-Z]+\\.[0-9a-zA-Z]+";   // Make sure . at right side
     //String regExString = ".+@\\w+\\.\\w+";     // shorter -> word characters
     //String regExString = ".+@(\\w+\\.)+\\w+";    // enable more sub domains
-    static final String regExString = ".+@(\\w+\\.)+(\\w+)";    // group for top level domain
-//    static final String regExString = "(?<username>.+)@(?<fqdn>(\\w+\\.)+(?<topdomain>\\w+))";    // named group for top level domain
+//    static final String regExString = ".+@(\\w+\\.)+(\\w+)";    // group for top level domain
+//    static final String regExString = "(?<username>.+)" // local part aka user name
+//                                      + "@" // mandator separator
+//                                      + "(?<fqdn>(\\w+\\.)+(?<topdomain>\\w+))";    // named group for top level domain
+    static final String regExString = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                                      + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$";
     static final Pattern regExPattern = Pattern.compile( regExString );
-
+    static final Matcher matcherFromPreCompiledPattern = regExPattern
+            .matcher( "" );
     static final List<String> testAddresses = List.of(
             "p.vandenhombergh@fontys,nl",
             "r.vandenham@fontys.nl",
@@ -92,8 +97,18 @@ public class Regexcompiled {
     @BenchmarkMode( Mode.AverageTime )
     public void b2CompiledPattern(Blackhole blackhole) {
         for ( String testAddress : testAddresses ) {
-
             blackhole.consume( isValidCompiledPattern( testAddress ) );
+        }
+    }
+
+    @Benchmark
+    @OutputTimeUnit( TimeUnit.NANOSECONDS )
+    @BenchmarkMode( Mode.AverageTime )
+    public void b3ReuseMatcher(Blackhole blackhole) {
+        for ( String testAddress : testAddresses ) {
+            blackhole.consume( matcherFromPreCompiledPattern
+                    .reset( testAddress )
+                    .matches() );
         }
     }
 }
